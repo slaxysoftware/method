@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wordex Method</title>
+    <title>WWordex Method</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --dark-bg: #0d1117;
             --darker-bg: #0a0f2d;
-            --card-bg: rgba(20, 25, 47, 0.7);
+            --card-bg: #1a1f2e;
             --text-light: #f0f0f0;
+            --text-gray: #a0a0a0;
             --neon-blue: #1e90ff;
             --neon-blue-light: #4da6ff;
             --neon-purple: #8a2be2;
@@ -19,8 +20,8 @@
             --warning: #ffcc00;
             --danger: #ff5555;
             --transition: all 0.3s ease;
-            --border-radius: 12px;
-            --box-shadow: 0 4px 20px rgba(30, 144, 255, 0.15);
+            --border-radius: 8px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
             --vip-bg: linear-gradient(135deg, #1e90ff, #8a2be2);
             --free-bg: linear-gradient(135deg, #28a745, #20c997);
         }
@@ -32,7 +33,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--dark-bg), var(--darker-bg));
+            background: var(--dark-bg);
             color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
@@ -61,40 +62,33 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: rgba(13, 17, 23, 0.9);
+            background: rgba(13, 17, 23, 0.95);
             z-index: 1000;
             transition: opacity 0.5s ease;
         }
 
         .login-container {
-            background: rgba(20, 25, 47, 0.9);
-            padding: 3rem;
+            background: var(--card-bg);
+            padding: 2.5rem;
             border-radius: var(--border-radius);
-            border: 1px solid rgba(30, 144, 255, 0.3);
-            box-shadow: var(--box-shadow), 0 0 30px rgba(30, 144, 255, 0.2);
+            box-shadow: var(--box-shadow);
             text-align: center;
-            max-width: 500px;
+            max-width: 450px;
             width: 90%;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.8s ease;
         }
 
         .login-logo {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 15px rgba(30, 144, 255, 0.4);
+            color: var(--neon-blue);
             margin-bottom: 1.5rem;
             letter-spacing: -0.5px;
         }
 
         .login-subtitle {
-            color: #ccc;
+            color: var(--text-gray);
             margin-bottom: 2rem;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .login-form {
@@ -110,15 +104,15 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: var(--neon-blue-light);
+            color: var(--text-gray);
         }
 
         .form-group input {
             width: 100%;
             padding: 0.9rem 1.2rem;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
             color: var(--text-light);
             transition: var(--transition);
             font-family: 'Inter', sans-serif;
@@ -128,18 +122,18 @@
         .form-group input:focus {
             outline: none;
             border-color: var(--neon-blue);
-            box-shadow: 0 0 12px rgba(30, 144, 255, 0.35);
+            box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
         }
 
         .login-btn {
             background: var(--neon-blue);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             padding: 1rem 2rem;
             cursor: pointer;
             transition: var(--transition);
-            font-size: 1.1rem;
+            font-size: 1rem;
             width: 100%;
             font-weight: 600;
             margin-top: 1rem;
@@ -151,20 +145,13 @@
             box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4);
         }
 
-        .login-btn:disabled {
-            background: #555;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
         .error-message {
             color: var(--danger);
             margin-top: 1rem;
             display: none;
             background: rgba(255, 85, 85, 0.1);
             padding: 0.8rem;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             border-left: 3px solid var(--danger);
         }
 
@@ -174,7 +161,7 @@
             display: none;
             background: rgba(40, 167, 69, 0.1);
             padding: 0.8rem;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             border-left: 3px solid var(--success);
         }
 
@@ -185,94 +172,62 @@
 
         /* Navbar */
         .navbar {
-            background: rgba(13, 17, 23, 0.95);
-            backdrop-filter: blur(10px);
+            background: var(--card-bg);
             padding: 1rem 2rem;
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid rgba(30, 144, 255, 0.2);
-            box-shadow: 0 0 15px rgba(30, 144, 255, 0.1);
+            box-shadow: var(--box-shadow);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 15px rgba(30, 144, 255, 0.3);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neon-blue);
             letter-spacing: -0.5px;
         }
 
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-        }
-
-        .search-container {
-            position: relative;
-        }
-
-        .search-input {
-            padding: 0.7rem 1rem 0.7rem 2.5rem;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            color: var(--text-light);
-            width: 250px;
-            transition: var(--transition);
-            font-size: 0.9rem;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 10px rgba(30, 144, 255, 0.3);
-            width: 300px;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #aaa;
+            gap: 1rem;
         }
 
         .user-profile {
             display: flex;
             align-items: center;
             gap: 0.7rem;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.05);
             padding: 0.5rem 1rem;
             border-radius: 20px;
-            cursor: pointer;
             transition: var(--transition);
-        }
-
-        .user-profile:hover {
-            background: rgba(30, 144, 255, 0.2);
         }
 
         .user-avatar {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: var(--neon-blue);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .vip-avatar {
+            background: var(--vip-bg);
+        }
+
+        .free-avatar {
+            background: var(--free-bg);
         }
 
         .user-name {
             font-weight: 500;
+            font-size: 0.9rem;
         }
 
         .user-badge {
@@ -293,120 +248,208 @@
         }
 
         .mobile-menu {
-            display: none;
             font-size: 1.5rem;
             cursor: pointer;
+            color: var(--text-light);
         }
 
-        /* Hoşgeldin Bölümü */
-        .welcome-section {
+        /* Sidebar Menü */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100%;
+            background: var(--card-bg);
+            z-index: 1000;
             padding: 2rem;
-            text-align: center;
-            margin-top: 1rem;
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+            overflow-y: auto;
         }
 
-        .welcome-text {
-            font-size: 1.8rem;
-            font-weight: 600;
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 2rem;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        }
+
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neon-blue);
+        }
+
+        .close-sidebar {
+            font-size: 1.5rem;
+            color: var(--text-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-sidebar:hover {
+            color: var(--neon-blue);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-item {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            padding: 0.8rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .menu-item:hover {
+            background: rgba(30, 144, 255, 0.1);
+            color: var(--neon-blue);
+        }
+
+        .menu-category {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 1.5rem 0 0.5rem 1rem;
+            font-weight: 600;
+        }
+
+        .submenu {
+            list-style: none;
+            padding-left: 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .submenu.active {
+            max-height: 500px;
+        }
+
+        .submenu li {
+            margin-bottom: 0.3rem;
+        }
+
+        .submenu-item {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: block;
+            padding: 0.6rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .submenu-item:hover {
+            background: rgba(30, 144, 255, 0.05);
+            color: var(--neon-blue);
+        }
+
+        /* İçerik Bölümleri */
+        .content-section {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-section.active {
+            display: block;
         }
 
         .stats-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            margin-bottom: 3rem;
         }
 
         .stat-card {
             background: var(--card-bg);
             padding: 1.5rem;
             border-radius: var(--border-radius);
-            border: 1px solid rgba(30, 144, 255, 0.2);
             box-shadow: var(--box-shadow);
             text-align: center;
             transition: var(--transition);
-            backdrop-filter: blur(5px);
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(30, 144, 255, 0.25);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
         .stat-icon {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 1rem;
             color: var(--neon-blue);
         }
 
         .stat-title {
             font-size: 0.9rem;
-            color: #aaa;
+            color: var(--text-gray);
             margin-bottom: 0.5rem;
         }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--text-light);
         }
 
-        /* VIP Satın Alma Bölümü */
-        .vip-section {
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
         .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-            font-size: 2.2rem;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--text-light);
             position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
+            padding-bottom: 0.5rem;
         }
 
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-            border-radius: 2px;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--neon-blue);
+            border-radius: 3px;
         }
 
         .pricing-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
+            margin-bottom: 3rem;
         }
 
         .pricing-card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
-            padding: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
             box-shadow: var(--box-shadow);
             transition: var(--transition);
-            backdrop-filter: blur(5px);
             display: flex;
             flex-direction: column;
         }
 
         .pricing-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(30, 144, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .pricing-header {
@@ -415,13 +458,13 @@
         }
 
         .pricing-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
             color: var(--text-light);
         }
 
         .pricing-subtitle {
-            color: #aaa;
+            color: var(--text-gray);
         }
 
         .pricing-features {
@@ -456,7 +499,8 @@
         }
 
         .feature-text {
-            color: #ccc;
+            color: var(--text-light);
+            font-size: 0.95rem;
         }
 
         .pricing-action {
@@ -483,20 +527,95 @@
             box-shadow: 0 8px 20px rgba(30, 144, 255, 0.4);
         }
 
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--neon-blue);
+        }
+
+        .contact-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .contact-info {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--neon-blue);
+        }
+
+        .method-content {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .method-text {
+            line-height: 1.7;
+            color: var(--text-light);
+        }
+
+        .method-text h3 {
+            color: var(--neon-blue);
+            margin: 1.5rem 0 0.8rem;
+            font-size: 1.3rem;
+        }
+
+        .method-text p {
+            margin-bottom: 1rem;
+            color: var(--text-gray);
+        }
+
+        .method-text ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .method-text li {
+            margin-bottom: 0.5rem;
+            color: var(--text-gray);
+        }
+
         /* Animasyonlar */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
         }
 
-        .float-animation {
-            animation: float 5s ease-in-out infinite;
+        .shake {
+            animation: shake 0.5s;
         }
 
         /* Responsive Tasarım */
@@ -510,6 +629,10 @@
                 max-width: 600px;
                 margin: 0 auto;
             }
+            
+            .contact-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
@@ -517,20 +640,8 @@
                 padding: 1rem;
             }
             
-            .search-container {
-                display: none;
-            }
-            
-            .mobile-menu {
-                display: block;
-            }
-            
             .user-name {
                 display: none;
-            }
-            
-            .welcome-text {
-                font-size: 1.5rem;
             }
             
             .stats-container {
@@ -538,8 +649,8 @@
                 max-width: 400px;
             }
             
-            .vip-section {
-                padding: 3rem 1rem;
+            .content-section {
+                padding: 1.5rem;
             }
             
             .login-container {
@@ -547,7 +658,15 @@
             }
             
             .login-logo {
-                font-size: 2.2rem;
+                font-size: 2rem;
+            }
+            
+            .sidebar {
+                width: 85%;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -557,11 +676,11 @@
             }
             
             .logo {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
             
             .section-title {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
             }
             
             .pricing-card {
@@ -569,7 +688,11 @@
             }
             
             .stat-value {
-                font-size: 1.7rem;
+                font-size: 1.5rem;
+            }
+            
+            .contact-card {
+                padding: 1.5rem;
             }
         }
     </style>
@@ -580,16 +703,11 @@
     
     <!-- Giriş Ekranı -->
     <div class="login-screen" id="loginScreen">
-        <div class="login-container">
-            <div class="login-logo">Wordex Method</div>
-            <p class="login-subtitle">Premium yöntemlere erişmek için giriş yapın</p>
+        <div class="login-container" id="loginContainer">
+            <div class="login-logo">WWordex Method</div>
+            <p class="login-subtitle">Premium yöntemlere erişmek için anahtarınızı girin</p>
             
             <div class="login-form">
-                <div class="form-group">
-                    <label for="usernameInput">Kullanıcı Adı</label>
-                    <input type="text" id="usernameInput" placeholder="Kullanıcı adınızı girin">
-                </div>
-                
                 <div class="form-group">
                     <label for="keyInput">Anahtar</label>
                     <input type="password" id="keyInput" placeholder="Anahtarınızı girin">
@@ -607,30 +725,52 @@
     <div class="main-content" id="mainContent">
         <!-- Navbar -->
         <nav class="navbar">
-            <div class="logo">Wordex Method</div>
+            <div class="mobile-menu" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <div class="logo">WWordex Method</div>
             
             <div class="nav-right">
-                <div class="search-container">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" class="search-input" placeholder="Method Ara...">
-                </div>
-                
                 <div class="user-profile" id="userProfile">
-                    <div class="user-avatar" id="userAvatar">W</div>
+                    <div class="user-avatar free-avatar" id="userAvatar">
+                        <i class="fas fa-user"></i>
+                    </div>
                     <div class="user-name" id="userName">Misafir</div>
                     <div class="user-badge free-badge" id="userBadge">Free</div>
-                </div>
-                
-                <div class="mobile-menu" id="menuToggle">
-                    <i class="fas fa-bars"></i>
                 </div>
             </div>
         </nav>
         
-        <!-- Hoşgeldin Bölümü -->
-        <section class="welcome-section">
-            <h2 class="welcome-text" id="welcomeText">Ooo Hoşgeldin Kral</h2>
+        <!-- Sidebar Menü -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">WWordex</div>
+                <div class="close-sidebar" id="closeSidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
             
+            <ul class="sidebar-menu">
+                <li><a href="#" class="menu-item" data-target="home"><i class="fas fa-home"></i> Ana Sayfa</a></li>
+                <li><a href="#" class="menu-item" data-target="purchase"><i class="fas fa-shopping-cart"></i> Satın Alım</a></li>
+                
+                <div class="menu-category">Free Methodlar</div>
+                <li>
+                    <a href="#" class="menu-item toggle-submenu" data-submenu="free-methods">
+                        <i class="fas fa-chevron-down"></i> Free Methodlar
+                    </a>
+                    <ul class="submenu" id="free-methods">
+                        <li><a href="#" class="submenu-item" data-target="api-info">API Nedir?</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="#" class="menu-item" data-target="contact"><i class="fas fa-phone"></i> İletişim</a></li>
+            </ul>
+        </div>
+        
+        <!-- Ana Sayfa -->
+        <section class="content-section active" id="home">
             <div class="stats-container">
                 <div class="stat-card">
                     <div class="stat-icon">
@@ -664,14 +804,11 @@
                     <div class="stat-value" id="dailyLogin">78</div>
                 </div>
             </div>
-        </section>
-        
-        <!-- VIP Satın Alma Bölümü -->
-        <section class="vip-section">
+            
             <h2 class="section-title">Üyelik Seçenekleri</h2>
             
             <div class="pricing-container">
-                <div class="pricing-card">
+                <div class="pricing-card" id="freeCard">
                     <div class="pricing-header">
                         <h3 class="pricing-title">Free Üyelik</h3>
                         <p class="pricing-subtitle">Temel özelliklere erişim</p>
@@ -712,7 +849,7 @@
                     </div>
                 </div>
                 
-                <div class="pricing-card float-animation">
+                <div class="pricing-card" id="vipCard">
                     <div class="pricing-header">
                         <h3 class="pricing-title">VIP Üyelik</h3>
                         <p class="pricing-subtitle">Tüm özelliklere erişim</p>
@@ -757,6 +894,143 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Satın Alım Sayfası -->
+        <section class="content-section" id="purchase">
+            <h2 class="section-title">Satın Alım</h2>
+            
+            <div class="pricing-container">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">VIP Üyelik</h3>
+                        <p class="pricing-subtitle">Tüm özelliklere erişim</p>
+                    </div>
+                    
+                    <div class="pricing-features">
+                        <div class="feature-item">
+                            <div class="feature-icon feature-yes">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="feature-text">Canlı Destek</span>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon feature-yes">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="feature-text">Tüm sorgulara erişim</span>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon feature-yes">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="feature-text">Güncelleme var</span>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon feature-yes">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="feature-text">Uygulamalı methodlar</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pricing-action">
+                        <a href="https://t.me/wordexchecker" class="telegram-link" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                            Satın alım için @wordexchecker
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- API Nedir Sayfası -->
+        <section class="content-section" id="api-info">
+            <h2 class="section-title">API Nedir?</h2>
+            
+            <div class="method-content">
+                <div class="method-text">
+                    <h3>📦 API Çekme & Telegram Bot Eğitim Notları</h3>
+                    
+                    <h3>1. API nedir?</h3>
+                    <p>API aslında bir köprü. Sen soru soruyosun o da sana cevap veriyo. Mesela "hava nasıl" diyosun → sana "32 derece" diyip dönüyo.</p>
+                    
+                    <h3>2. GET - POST olayı</h3>
+                    <p>GET → Veriyi al (mesela hava durumu)</p>
+                    <p>POST → Veri gönder (mesela form doldur)</p>
+                    <p>Kafanda kalsın: GET = al, POST = gönder</p>
+                    
+                    <h3>3. Python'da API çekme</h3>
+                    <p>import requests</p>
+                    <p>url = "https://jsonplaceholder.typicode.com/posts/1"</p>
+                    <p>r = requests.get(url)</p>
+                    <p>print(r.json())</p>
+                    
+                    <h3>4. Telegram bot açma</h3>
+                    <p>1. Telegram'da @BotFather'a gir</p>
+                    <p>2. /newbot yaz, bot adı ver</p>
+                    <p>3. Sana bir TOKEN veriyo, bu şifre gibi</p>
+                    
+                    <h3>5. Botla API bağlama</h3>
+                    <p>import telebot</p>
+                    <p>import requests</p>
+                    <p>TOKEN = "BURAYA_TOKENİNİ_YAZ"</p>
+                    <p>bot = telebot.TeleBot(TOKEN)</p>
+                    <p>@bot.message_handler(commands=['start'])</p>
+                    <p>def start(message):</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;bot.reply_to(message, "Selam! /hava yaz hava durumunu söyleyim")</p>
+                    <p>@bot.message_handler(commands=['hava'])</p>
+                    <p>def hava(message):</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;url = "https://api.open-meteo.com/v1/forecast?latitude=41.0&longitude=29.0&current_weather=true"</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;r = requests.get(url).json()</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;derece = r["current_weather"]["temperature"]</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;bot.reply_to(message, f"Şu an sıcaklık {derece}°C")</p>
+                    <p>bot.polling()</p>
+                    
+                    <h3>6. Mantık</h3>
+                    <p>Kullanıcı /hava yazıyo → Bot API'ye soruyo → API cevap dönüyo → Bot cevabı kullanıcıya yolluyo</p>
+                    
+                    <h3>7. Pratik fikirler</h3>
+                    <p>/usd → dolar kuru</p>
+                    <p>/film → rastgele film öner</p>
+                    <p>/hava → sıcaklık</p>
+                    <p>API = bilgi kaynağı, Bot = aracı, Sen = işi çözen adam</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- İletişim Sayfası -->
+        <section class="content-section" id="contact">
+            <h2 class="section-title">İletişim</h2>
+            
+            <div class="contact-container">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <h3 class="contact-title">Telegram</h3>
+                    <div class="contact-info">@wordexchecker</div>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <h3 class="contact-title">TikTok</h3>
+                    <div class="contact-info">@wordexchecker</div>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-discord"></i>
+                    </div>
+                    <h3 class="contact-title">Discord</h3>
+                    <div class="contact-info">slaxy.py</div>
+                </div>
+            </div>
+        </section>
     </div>
     
     <script>
@@ -779,10 +1053,10 @@
                 constructor() {
                     this.x = Math.random() * canvas.width;
                     this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 3 + 1;
+                    this.size = Math.random() * 2 + 1;
                     this.speedX = Math.random() * 1 - 0.5;
                     this.speedY = Math.random() * 1 - 0.5;
-                    this.color = `rgba(30, 144, 255, ${Math.random() * 0.5 + 0.1})`;
+                    this.color = `rgba(30, 144, 255, ${Math.random() * 0.3 + 0.1})`;
                 }
                 
                 update() {
@@ -810,14 +1084,14 @@
                 constructor() {
                     this.x = Math.random() * canvas.width;
                     this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 100 + 50;
-                    this.speed = Math.random() * 0.5 + 0.1;
-                    this.opacity = Math.random() * 0.05 + 0.01;
+                    this.size = Math.random() * 80 + 40;
+                    this.speed = Math.random() * 0.3 + 0.1;
+                    this.opacity = Math.random() * 0.03 + 0.01;
                 }
                 
                 update() {
-                    this.opacity += 0.005 * this.speed;
-                    if (this.opacity > 0.1) {
+                    this.opacity += 0.003 * this.speed;
+                    if (this.opacity > 0.06) {
                         this.speed = -this.speed;
                     } else if (this.opacity < 0.01) {
                         this.speed = Math.abs(this.speed);
@@ -826,15 +1100,15 @@
                 
                 draw() {
                     ctx.strokeStyle = `rgba(30, 144, 255, ${this.opacity})`;
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = 1;
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     ctx.stroke();
                     
                     ctx.strokeStyle = `rgba(30, 144, 255, ${this.opacity * 0.5})`;
-                    ctx.lineWidth = 5;
+                    ctx.lineWidth = 3;
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size + 3, 0, Math.PI * 2);
+                    ctx.arc(this.x, this.y, this.size + 2, 0, Math.PI * 2);
                     ctx.stroke();
                 }
             }
@@ -843,11 +1117,11 @@
             const particles = [];
             const lightRings = [];
             
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 80; i++) {
                 particles.push(new Particle());
             }
             
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 4; i++) {
                 lightRings.push(new LightRing());
             }
             
@@ -884,8 +1158,8 @@
         
         // Giriş ekranı kontrolü
         const loginScreen = document.getElementById('loginScreen');
+        const loginContainer = document.getElementById('loginContainer');
         const mainContent = document.getElementById('mainContent');
-        const usernameInput = document.getElementById('usernameInput');
         const keyInput = document.getElementById('keyInput');
         const loginBtn = document.getElementById('loginBtn');
         const errorMessage = document.getElementById('errorMessage');
@@ -908,35 +1182,40 @@
         }
         
         // Kullanıcı arayüzünü güncelleme
-        function updateUserInterface(username, isVip) {
-            document.getElementById('userName').textContent = username;
-            document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
-            
+        function updateUserInterface(isVip) {
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
             const userBadge = document.getElementById('userBadge');
-            const welcomeText = document.getElementById('welcomeText');
+            const freeCard = document.getElementById('freeCard');
             
             if (isVip) {
+                userAvatar.className = 'user-avatar vip-avatar';
+                userAvatar.innerHTML = '<i class="fas fa-crown"></i>';
+                userName.textContent = 'Wordex VIP';
                 userBadge.className = 'user-badge vip-badge';
                 userBadge.textContent = 'VIP';
-                welcomeText.textContent = `Ooo Hoşgeldin VIP Üye ${username}`;
+                freeCard.style.display = 'none';
             } else {
+                userAvatar.className = 'user-avatar free-avatar';
+                userAvatar.innerHTML = '<i class="fas fa-user"></i>';
+                userName.textContent = 'Wordex Free';
                 userBadge.className = 'user-badge free-badge';
                 userBadge.textContent = 'Free';
-                welcomeText.textContent = `Ooo Hoşgeldin ${username}`;
+                freeCard.style.display = 'flex';
             }
+        }
+        
+        // Sayfa geçişlerini yönetme
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
         }
         
         // Giriş butonu tıklama
         loginBtn.addEventListener('click', function() {
-            const username = usernameInput.value.trim();
             const key = keyInput.value.trim();
-            
-            if (!username) {
-                errorMessage.textContent = 'Lütfen kullanıcı adınızı girin!';
-                errorMessage.style.display = 'block';
-                successMessage.style.display = 'none';
-                return;
-            }
             
             if (key === vipKey) {
                 // VIP giriş başarılı
@@ -950,7 +1229,7 @@
                         loginScreen.style.display = 'none';
                         mainContent.style.display = 'block';
                         updateStats();
-                        updateUserInterface(username, true);
+                        updateUserInterface(true);
                     }, 500);
                 }, 2000);
             } else if (key === freeKey) {
@@ -965,7 +1244,7 @@
                         loginScreen.style.display = 'none';
                         mainContent.style.display = 'block';
                         updateStats();
-                        updateUserInterface(username, false);
+                        updateUserInterface(false);
                     }, 500);
                 }, 2000);
             } else {
@@ -973,6 +1252,12 @@
                 errorMessage.textContent = 'Geçersiz anahtar! Lütfen tekrar deneyin.';
                 errorMessage.style.display = 'block';
                 successMessage.style.display = 'none';
+                
+                // Shake animasyonu
+                loginContainer.classList.add('shake');
+                setTimeout(() => {
+                    loginContainer.classList.remove('shake');
+                }, 500);
             }
         });
         
@@ -981,6 +1266,50 @@
             if (e.key === 'Enter') {
                 loginBtn.click();
             }
+        });
+        
+        // Sidebar menü kontrolü
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+        
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.add('active');
+        });
+        
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+        
+        // Alt menü toggle
+        document.querySelectorAll('.toggle-submenu').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const submenuId = this.getAttribute('data-submenu');
+                const submenu = document.getElementById(submenuId);
+                const icon = this.querySelector('i');
+                
+                submenu.classList.toggle('active');
+                
+                if (submenu.classList.contains('active')) {
+                    icon.className = 'fas fa-chevron-up';
+                } else {
+                    icon.className = 'fas fa-chevron-down';
+                }
+            });
+        });
+        
+        // Menü item tıklama
+        document.querySelectorAll('.menu-item, .submenu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = this.getAttribute('data-target');
+                
+                if (target) {
+                    showSection(target);
+                    sidebar.classList.remove('active');
+                }
+            });
         });
         
         // Sayfa yüklendiğinde canvas'ı başlat
