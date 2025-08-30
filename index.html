@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordex Method</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #0d1117;
+            --darker-bg: #0a0f2d;
+            --card-bg: rgba(20, 25, 47, 0.7);
+            --text-light: #f0f0f0;
+            --neon-blue: #1e90ff;
+            --neon-blue-light: #4da6ff;
+            --neon-purple: #8a2be2;
+            --success: #28a745;
+            --warning: #ffcc00;
+            --danger: #ff5555;
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(30, 144, 255, 0.15);
+            --vip-bg: linear-gradient(135deg, #1e90ff, #8a2be2);
+            --free-bg: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg), var(--darker-bg));
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Canvas arkaplan */
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Giriş Ekranı */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(13, 17, 23, 0.9);
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .login-container {
+            background: rgba(20, 25, 47, 0.9);
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(30, 144, 255, 0.3);
+            box-shadow: var(--box-shadow), 0 0 30px rgba(30, 144, 255, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .login-logo {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(30, 144, 255, 0.4);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .login-subtitle {
+            color: #ccc;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .login-form {
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--neon-blue-light);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: var(--text-light);
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 12px rgba(30, 144, 255, 0.35);
+        }
+
+        .login-btn {
+            background: var(--neon-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.1rem;
+            width: 100%;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .login-btn:hover {
+            background: var(--neon-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4);
+        }
+
+        .login-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .error-message {
+            color: var(--danger);
+            margin-top: 1rem;
+            display: none;
+            background: rgba(255, 85, 85, 0.1);
+            padding: 0.8rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--danger);
+        }
+
+        .success-message {
+            color: var(--success);
+            margin-top: 1rem;
+            display: none;
+            background: rgba(40, 167, 69, 0.1);
+            padding: 0.8rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--success);
+        }
+
+        /* Ana İçerik */
+        .main-content {
+            display: none;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(30, 144, 255, 0.2);
+            box-shadow: 0 0 15px rgba(30, 144, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(30, 144, 255, 0.3);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 0.7rem 1rem 0.7rem 2.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            color: var(--text-light);
+            width: 250px;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.3);
+            width: 300px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-profile:hover {
+            background: rgba(30, 144, 255, 0.2);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        .user-badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .vip-badge {
+            background: var(--vip-bg);
+            color: white;
+        }
+
+        .free-badge {
+            background: var(--free-bg);
+            color: white;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hoşgeldin Bölümü */
+        .welcome-section {
+            padding: 2rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .welcome-text {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(30, 144, 255, 0.25);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--neon-blue);
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        /* VIP Satın Alma Bölümü */
+        .vip-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.2rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            border-radius: 2px;
+        }
+
+        .pricing-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(30, 144, 255, 0.3);
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .pricing-subtitle {
+            color: #aaa;
+        }
+
+        .pricing-features {
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon {
+            margin-right: 0.8rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .feature-yes {
+            color: var(--success);
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .feature-no {
+            color: var(--danger);
+            background: rgba(255, 85, 85, 0.1);
+        }
+
+        .feature-text {
+            color: #ccc;
+        }
+
+        .pricing-action {
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .telegram-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: var(--vip-bg);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(30, 144, 255, 0.3);
+        }
+
+        .telegram-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(30, 144, 255, 0.4);
+        }
+
+        /* Animasyonlar */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .float-animation {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        /* Responsive Tasarım */
+        @media (max-width: 1024px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .pricing-container {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .search-container {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .user-name {
+                display: none;
+            }
+            
+            .welcome-text {
+                font-size: 1.5rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+            
+            .vip-section {
+                padding: 3rem 1rem;
+            }
+            
+            .login-container {
+                padding: 2rem;
+            }
+            
+            .login-logo {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .pricing-card {
+                padding: 1.5rem;
+            }
+            
+            .stat-value {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas Arkaplan -->
+    <canvas id="background-canvas"></canvas>
+    
+    <!-- Giriş Ekranı -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-logo">Wordex Method</div>
+            <p class="login-subtitle">Premium yöntemlere erişmek için giriş yapın</p>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="usernameInput">Kullanıcı Adı</label>
+                    <input type="text" id="usernameInput" placeholder="Kullanıcı adınızı girin">
+                </div>
+                
+                <div class="form-group">
+                    <label for="keyInput">Anahtar</label>
+                    <input type="password" id="keyInput" placeholder="Anahtarınızı girin">
+                </div>
+                
+                <button class="login-btn" id="loginBtn">Giriş Yap</button>
+                
+                <div class="error-message" id="errorMessage">Geçersiz anahtar! Lütfen tekrar deneyin.</div>
+                <div class="success-message" id="successMessage">Anahtar doğrulandı, yönlendiriliyorsunuz...</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ana İçerik -->
+    <div class="main-content" id="mainContent">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="logo">Wordex Method</div>
+            
+            <div class="nav-right">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Method Ara...">
+                </div>
+                
+                <div class="user-profile" id="userProfile">
+                    <div class="user-avatar" id="userAvatar">W</div>
+                    <div class="user-name" id="userName">Misafir</div>
+                    <div class="user-badge free-badge" id="userBadge">Free</div>
+                </div>
+                
+                <div class="mobile-menu" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Hoşgeldin Bölümü -->
+        <section class="welcome-section">
+            <h2 class="welcome-text" id="welcomeText">Ooo Hoşgeldin Kral</h2>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-title">Aktif Üye</div>
+                    <div class="stat-value" id="activeMembers">32</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="stat-title">Kayıtlı Kullanıcı</div>
+                    <div class="stat-value" id="totalMembers">245</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="stat-title">VIP Üye</div>
+                    <div class="stat-value" id="vipMembers">42</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <div class="stat-title">Günlük Giriş</div>
+                    <div class="stat-value" id="dailyLogin">78</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- VIP Satın Alma Bölümü -->
+        <section class="vip-section">
+            <h2 class="section-title">Üyelik Seçenekleri</h2>
+            
+            <div class="pricing-container">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Free Üyelik</h3>
+                        <p class="pricing-subtitle">Temel özelliklere erişim</p>
+                    </div>
+                    
+                    <div class="pricing-features">
+                        <div class="feature-item">
+                            <div class="feature-icon feature-no">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <span class="feature-text">Canlı Destek yok</span>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon feature-no">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <span class="feature-text">Sınırlı erişim</span>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon feature-no">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <span class="feature-text">Uygulamalı method yok</span>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon feature-yes">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="feature-text">Güncelleme var</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pricing-action">
+                        <div class="user-badge free-badge">Mevcut Planınız</div>
+                    </div>
+                </div>
+                
+                <div class="pricing-card float-animation">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">VIP Üyelik</h3>
+                        <p class="pricing-subtitle">Tüm özelliklere erişim</p>
+                    </div>
+                    
+                    <div class="pricing-features">
+                        <div class="feature-item">
+                            <div class="feature-icon feature-yes">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="feature-text">Canlı Destek</span>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon feature-yes">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="feature-text">Tüm sorgulara erişim</span>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon feature-yes">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="feature-text">Güncelleme var</span>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon feature-yes">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="feature-text">Uygulamalı methodlar</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pricing-action">
+                        <a href="https://t.me/wordexchecker" class="telegram-link" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                            Satın alım için @wordexchecker
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // Canvas arkaplanı oluşturma
+        function initCanvas() {
+            const canvas = document.getElementById('background-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Canvas boyutunu ayarla
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Partikül sınıfı
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 3 + 1;
+                    this.speedX = Math.random() * 1 - 0.5;
+                    this.speedY = Math.random() * 1 - 0.5;
+                    this.color = `rgba(30, 144, 255, ${Math.random() * 0.5 + 0.1})`;
+                }
+                
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    
+                    if (this.x > canvas.width || this.x < 0) {
+                        this.speedX = -this.speedX;
+                    }
+                    if (this.y > canvas.height || this.y < 0) {
+                        this.speedY = -this.speedY;
+                    }
+                }
+                
+                draw() {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            
+            // Işık halkası sınıfı
+            class LightRing {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 100 + 50;
+                    this.speed = Math.random() * 0.5 + 0.1;
+                    this.opacity = Math.random() * 0.05 + 0.01;
+                }
+                
+                update() {
+                    this.opacity += 0.005 * this.speed;
+                    if (this.opacity > 0.1) {
+                        this.speed = -this.speed;
+                    } else if (this.opacity < 0.01) {
+                        this.speed = Math.abs(this.speed);
+                    }
+                }
+                
+                draw() {
+                    ctx.strokeStyle = `rgba(30, 144, 255, ${this.opacity})`;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.stroke();
+                    
+                    ctx.strokeStyle = `rgba(30, 144, 255, ${this.opacity * 0.5})`;
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size + 3, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
+            
+            // Nesneleri oluştur
+            const particles = [];
+            const lightRings = [];
+            
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+            
+            for (let i = 0; i < 5; i++) {
+                lightRings.push(new LightRing());
+            }
+            
+            // Animasyon döngüsü
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Gradient arkaplan
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                gradient.addColorStop(0, '#0d1117');
+                gradient.addColorStop(0.5, '#0f1529');
+                gradient.addColorStop(1, '#0a0f2d');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Işık halkalarını çiz ve güncelle
+                lightRings.forEach(ring => {
+                    ring.update();
+                    ring.draw();
+                });
+                
+                // Partikülleri çiz ve güncelle
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+        
+        // Giriş ekranı kontrolü
+        const loginScreen = document.getElementById('loginScreen');
+        const mainContent = document.getElementById('mainContent');
+        const usernameInput = document.getElementById('usernameInput');
+        const keyInput = document.getElementById('keyInput');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        
+        const vipKey = "x7p9lrmt2qvd48cj";
+        const freeKey = "wordexfree";
+        
+        // Rastgele sayı üretme
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        // İstatistikleri güncelleme
+        function updateStats() {
+            document.getElementById('activeMembers').textContent = getRandomInt(25, 40);
+            document.getElementById('totalMembers').textContent = getRandomInt(200, 300);
+            document.getElementById('vipMembers').textContent = getRandomInt(40, 60);
+            document.getElementById('dailyLogin').textContent = getRandomInt(75, 100);
+        }
+        
+        // Kullanıcı arayüzünü güncelleme
+        function updateUserInterface(username, isVip) {
+            document.getElementById('userName').textContent = username;
+            document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+            
+            const userBadge = document.getElementById('userBadge');
+            const welcomeText = document.getElementById('welcomeText');
+            
+            if (isVip) {
+                userBadge.className = 'user-badge vip-badge';
+                userBadge.textContent = 'VIP';
+                welcomeText.textContent = `Ooo Hoşgeldin VIP Üye ${username}`;
+            } else {
+                userBadge.className = 'user-badge free-badge';
+                userBadge.textContent = 'Free';
+                welcomeText.textContent = `Ooo Hoşgeldin ${username}`;
+            }
+        }
+        
+        // Giriş butonu tıklama
+        loginBtn.addEventListener('click', function() {
+            const username = usernameInput.value.trim();
+            const key = keyInput.value.trim();
+            
+            if (!username) {
+                errorMessage.textContent = 'Lütfen kullanıcı adınızı girin!';
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                return;
+            }
+            
+            if (key === vipKey) {
+                // VIP giriş başarılı
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // 2 saniye bekle ve ana içeriği göster
+                setTimeout(function() {
+                    loginScreen.style.opacity = '0';
+                    setTimeout(function() {
+                        loginScreen.style.display = 'none';
+                        mainContent.style.display = 'block';
+                        updateStats();
+                        updateUserInterface(username, true);
+                    }, 500);
+                }, 2000);
+            } else if (key === freeKey) {
+                // Free giriş başarılı
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // 2 saniye bekle ve ana içeriği göster
+                setTimeout(function() {
+                    loginScreen.style.opacity = '0';
+                    setTimeout(function() {
+                        loginScreen.style.display = 'none';
+                        mainContent.style.display = 'block';
+                        updateStats();
+                        updateUserInterface(username, false);
+                    }, 500);
+                }, 2000);
+            } else {
+                // Hatalı giriş
+                errorMessage.textContent = 'Geçersiz anahtar! Lütfen tekrar deneyin.';
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+            }
+        });
+        
+        // Enter tuşu ile giriş yapma
+        keyInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginBtn.click();
+            }
+        });
+        
+        // Sayfa yüklendiğinde canvas'ı başlat
+        window.addEventListener('load', () => {
+            initCanvas();
+        });
+    </script>
+</body>
+</html>
